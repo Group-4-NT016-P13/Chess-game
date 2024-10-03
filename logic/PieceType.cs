@@ -9,7 +9,7 @@ namespace logic
     public enum PieceType
     {
         Pawn,
-        BiShop,
+        Bishop,
         Knight,
         Rook,
         Queen,

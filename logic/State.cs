@@ -35,6 +35,7 @@ namespace logic
         {
             move.Execute(Board);
             playing = playing.Opponent();
+            Checkgameover();
         }
 
         public IEnumerable<Base> AllLegalMoveFor(Player player)
@@ -44,6 +45,29 @@ namespace logic
                 Pieces piece = Board[pos];
                 return piece.Get(pos, Board);
             });
+
+            return moveCandidates.Where(move => move.IsLegal(Board));   
+
+        }
+
+        private void Checkgameover()
+        {
+            if(!AllLegalMoveFor(playing).Any())
+            {
+                if(Board.IsInCheck(playing))
+                {
+                    result = Result.Win(playing.Opponent());
+                }
+                else
+                {
+                    result = Result.Draw(EndReason.stalemate);
+                }
+            }
+        }
+
+        public bool IsGameOver()
+        {
+            return result != null;
         }
     }
 }

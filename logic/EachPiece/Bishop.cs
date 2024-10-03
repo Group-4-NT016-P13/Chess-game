@@ -8,7 +8,7 @@ namespace logic
 {
     public class Bishop : Pieces
     {
-        public override PieceType type => PieceType.BiShop;
+        public override PieceType type => PieceType.Bishop;
         public override Player Color { get; }
 
         private static readonly Direction[] dirs = new Direction[]

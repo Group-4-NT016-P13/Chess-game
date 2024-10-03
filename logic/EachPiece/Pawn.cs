@@ -43,13 +43,31 @@ namespace logic
             return board[pos].Color != Color;
         }
 
+        private static IEnumerable<Base> PromotionMove ( Position from, Position to)
+        {
+            yield return new PawnPromotion(from, to, PieceType.Knight);
+            yield return new PawnPromotion(from, to, PieceType.Queen);
+            yield return new PawnPromotion(from, to, PieceType.Bishop);
+            yield return new PawnPromotion(from, to, PieceType.Rook);
+        }
+
         private IEnumerable<Base> ForwardMove(Position from, Board board)
         {
             Position onemove = from + forward;
 
             if(CanMoveTo(onemove, board))
             {
-                yield return new Normal(from, onemove);
+                if(onemove.Row == 0 || onemove.Row ==7)
+                {
+                    foreach(Base promMove in PromotionMove(from,onemove))
+                    {
+                        yield return promMove;
+                    }
+                }
+                else
+                {
+                    yield return new Normal(from, onemove);
+                }
 
                 Position twoMove=onemove + forward;
                 if(!Move && CanMoveTo(twoMove, board))
@@ -67,7 +85,17 @@ namespace logic
 
                 if(CanCapture(to,board))
                 {
-                    yield return new Normal(from, to);
+                    if (to.Row == 0 || to.Row == 7)
+                    {
+                        foreach (Base promMove in PromotionMove(from, to))
+                        {
+                            yield return promMove;
+                        }
+                    }
+                    else
+                    {
+                        yield return new Normal(from, to);
+                    }
 
                 }
             }
